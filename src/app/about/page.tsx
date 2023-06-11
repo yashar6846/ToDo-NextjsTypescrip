@@ -1,11 +1,14 @@
-import React from 'react'
+"use client"
+import { useEffect } from "react"
 
 type Props = {}
 
-const page = (props: Props) => {
+const About = (props: Props) => {
   return (
-    <div>page</div>
+    useEffect(()=>{
+      console.log("Heloo")
+    },[])
   )
 }
 
-export default page
+export default About
