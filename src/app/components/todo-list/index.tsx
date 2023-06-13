@@ -5,6 +5,7 @@ import Add from "./add";
 import List from "./list";
 import DoneList from "./done-list";
 
+
 const TodoList = () => {
   return (
     <div className="container">
@@ -12,6 +13,7 @@ const TodoList = () => {
       <Add />
       <List />
       <DoneList />
+     
     </div>
   );
 };
