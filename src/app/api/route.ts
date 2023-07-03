@@ -16,34 +16,52 @@
 //     })
 //     return NextResponse.json({hello: "world"})
 // }
-// export async function POST(request:Request){
-//     return NextResponse.json({hello: "post"})
+// export async function POST(request: Request){
+//   const body = await request.json()
+//   const newItemRef = push(ref)
+//   set(newItemRef, body).then(()=>console.log("Done",newItemRef.key))
+//     return NextResponse.json({...body, key: newItemRef.key})
 // }
 
-// Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-import {getDatabase,ref,set} from "firebase/database"
-import {NextResponse } from "next/server";
+//FierBase
+import { NextResponse } from "next/server";
+import {
+  getDatabase,
+  ref,
+  child,
+  get,
+  set,
+  onValue,
+  push,
+  onChildAdded,
+  onChildChanged,
+} from "firebase/database";
+import firebase, { initializeApp } from "firebase/app";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyC_diBKBrhyhJBOQbXE5ZAc0Q_khAU4gPI",
-  authDomain: "todo-list-96653.firebaseapp.com",
-  databaseURL: "https://todo-list-96653-default-rtdb.firebaseio.com",
-  projectId: "todo-list-96653",
-  storageBucket: "todo-list-96653.appspot.com",
-  messagingSenderId: "686517612282",
-  appId: "1:686517612282:web:f44b87b7997d1af79d2343"
+  databaseURL: "https://im-donkey-default-rtdb.firebaseio.com/",
 };
-export async function GET(request:Request){
-    // const app = initializeApp(fierbaseConfig)
-    const database= getDatabase(app)
-    set(ref(database, "users/" + 1),{
-      username: "yashar",
-      gmail: "yasharnajafi6846@gmail.com",
-      profile_name: "yashar",
-    })
-    return NextResponse.json({hello: "world"})
-}
-console.log(firebaseConfig)
-// Initialize Firebase
+
+
+
 const app = initializeApp(firebaseConfig);
+
+const db = getDatabase(app);
+
+const refTodo = ref(db, "user/1001/todo");
+
+
+
+export async function GET(request: Request) {
+  const todo = await get(child(ref(db), "user/1001/todo"));
+  console.log("🚀 ~ file: route.ts:70 ~ GET ~ todo:", todo.val());
+  return NextResponse.json(todo.val());
+ 
+}
+
+export async function POST(request: Request) {
+  const body = await request.json();
+  const newItemRef = push(refTodo);
+  set(newItemRef, body).then(() => console.log("Done:", newItemRef.key));
+  return NextResponse.json({ ...body, key: newItemRef.key });
+}
