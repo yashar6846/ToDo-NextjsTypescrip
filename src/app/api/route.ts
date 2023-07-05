@@ -10,6 +10,7 @@ import {
   push,
   onChildAdded,
   onChildChanged,
+  update
 } from "firebase/database";
 import firebase, { initializeApp } from "firebase/app";
 
@@ -29,7 +30,6 @@ const refTodo = ref(db, "user/1001/todo");
 
 export async function GET(request: Request) {
   const todo = await get(child(ref(db), "user/1001/todo"));
-  console.log("🚀 ~ file: route.ts:70 ~ GET ~ todo:", todo.val());
   return NextResponse.json(todo.val());
  
 }
@@ -41,3 +41,12 @@ export async function POST(request: Request) {
   return NextResponse.json({ ...body, key: newItemRef.key });
 }
 
+export async function PUT(request: Request) {
+  const {id, ...rest} = await request.json();
+  console.log("rest", rest);
+  console.log("id", id);
+  const updates: any ={}
+  updates["user/1001/todo/" + id] = rest
+  update(ref(db), updates)
+  return NextResponse.json("");
+}
