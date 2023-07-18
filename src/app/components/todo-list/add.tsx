@@ -1,8 +1,8 @@
 "use client";
 
-import { createTodo } from "./servics/todo";
+import { createTodo } from "../../servics/todo";
 import { useRef } from "react";
-
+ 
 const Add = () => {
   const formRef = useRef<HTMLFormElement>(null);
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -13,6 +13,8 @@ const Add = () => {
     const message = target.message.value;
     const response = await createTodo({ message });
     formRef.current?.reset();
+    console.log(response);
+    
     
   };
   return (
@@ -20,8 +22,8 @@ const Add = () => {
       <h3>Add Item</h3>
       <form ref={formRef} onSubmit={handleSubmit}>
         <input id="message" type="text" />
-        <input type="submit" value="Add" />
-        <input type="reset" value="reset" />
+        <input type="submit" value="Add" style={{marginLeft: 16}} />
+     
       </form>
     </>
   );

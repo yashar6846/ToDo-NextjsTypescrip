@@ -1,11 +1,17 @@
-import { getTodo } from "./servics/todo";
+import Todo from "@/app/types/todo";
+import { getTodo } from "../../servics/todo";
 import RowItem from "./row-item";
 
-const DoneList = async () => {
-  const todoList = await getTodo();
-  const rowItems = Object.keys(todoList)
-    .filter((key) => todoList[key].doneAt)
-    .map((key) => <RowItem key={key} title={todoList[key].message} done />);
+interface Props{
+  todos:Todo[]
+}
+
+const DoneList =  (props:Props) => {
+  const rowItems = props.todos
+  // const rowItems = Object.keys(todoList)
+    .filter((todo) => todo.doneAt)
+    .map((todo) => <RowItem key={todo.key} title={todo.message}done />);
+    
   return (
     <>
       <h3>Completed</h3>
